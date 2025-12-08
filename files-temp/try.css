@@ -1,0 +1,184 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Watercolor background appears only below nav */
+main::before {
+  content: '';
+  position: absolute;
+  top: 100px; /* Adjust based on header height */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 100px);
+  background-image: url('ss.png'); /* Your watercolor campus bg */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.75;
+  z-index: -1;
+}
+
+/* Layered gradient */
+.image-gradient {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.layer-blur {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  z-index: -1;
+}
+
+/* Container and header */
+.container {
+  position: relative;
+  width: 100%;
+  padding: 20px 60px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.logo {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+nav a {
+  margin: 0 15px;
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffdb70;
+}
+
+.btn-signing {
+  padding: 10px 20px;
+  background: #ff8c42;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-signing:hover {
+  background: #ffa959;
+}
+
+/* Main content */
+main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 85vh;
+  position: relative;
+  z-index: 1;
+}
+
+.content {
+  max-width: 600px;
+}
+
+.tag-box {
+  margin-bottom: 15px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px 15px;
+  background: #ffffff44;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #fff;
+  backdrop-filter: blur(3px);
+}
+
+h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.description {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: #eaeaea;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.btn-get-started,
+.btn-signing-main {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.btn-get-started {
+  background-color: #4b7bec;
+}
+
+.btn-get-started:hover {
+  background-color: #3867d6;
+}
+
+.btn-signing-main {
+  background-color: #20bf6b;
+}
+
+.btn-signing-main:hover {
+  background-color: #26de81;
+}
+
+/* Spline viewer position */
+spline-viewer.robot {
+  width: 500px;
+  height: 500px;
+  pointer-events: none;
+}
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+}

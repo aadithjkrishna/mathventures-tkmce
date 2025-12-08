@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leaderboard | QuizMaster</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: black;
+      background-size: cover;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-align: center;
+      color: #f7c948;
+    }
+
+    .podium {
+      max-width: 250px;
+      margin-bottom: 40px;
+    }
+
+    .leaderboard {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 30px;
+      background-color: rgba(255, 255, 255, 0.05);
+      -webkit-backdrop-filter: blur(15px);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .leaderboard-header,
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .leaderboard-header {
+      font-weight: 600;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .leaderboard-item:nth-child(odd) {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .rank {
+      width: 50px;
+      text-align: center;
+    }
+
+    .username {
+      flex: 1;
+      text-align: left;
+    }
+
+    .score {
+      width: 80px;
+      text-align: right;
+    }
+
+    .gold {
+      color: #FFD700;
+      font-weight: bold;
+    }
+
+    .silver {
+      color: #C0C0C0;
+      font-weight: bold;
+    }
+
+    .bronze {
+      color: #CD7F32;
+      font-weight: bold;
+    }
+
+    @media screen and (max-width: 480px) {
+      .leaderboard-header,
+      .leaderboard-item {
+        padding: 10px 15px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏆 Quiz Leaderboard</h1>
+
+  <!-- Podium Image -->
+  <img src="r.png" alt="Podium" class="podium" />
+
+  <!-- Leaderboard Table -->
+  <div class="leaderboard">
+    <div class="leaderboard-header">
+      <div class="rank">#</div>
+      <div class="username">Username</div>
+      <div class="score">Score</div>
+    </div>
+
+    <div class="leaderboard-item">
+      <div class="rank gold">1</div>
+      <div class="username">TheBrainiac</div>
+      <div class="score gold">980</div>
+    </div>
+    <div class="leaderboard-item">
+      <div class="rank silver">2</div>
+      <div class="username">QuizQueen</div>
+      <div class="score silver">910</div>
+    </div>
+    <div class="leaderboard-item">
+      <div class="rank bronze">3</div>
+      <div class="username">CodeCracker</div>
+      <div class="score bronze">870</div>
+    </div>
+    <div class="leaderboard-item">
+      <div class="rank">4</div>
+      <div class="username">MindStorm</div>
+      <div class="score">850</div>
+    </div>
+    <div class="leaderboard-item">
+      <div class="rank">5</div>
+      <div class="username">SweetPea_Codes</div>
+      <div class="score">835</div>
+    </div>
+  </div>
+
+</body>
+</html>

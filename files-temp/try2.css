@@ -1,0 +1,290 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Keep overflow hidden for full page background effects */
+    font-family: 'Segoe UI', sans-serif;
+    background: #a8dadc;
+    position: relative; /* Needed for absolute positioning of overlays */
+}
+
+/* Background gradient and blur should cover the entire viewport */
+.image-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    z-index: -2; /* Below the blur layer */
+    opacity: 0.7; /* Adjust as needed for effect */
+}
+
+.layer-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); /* A semi-transparent overlay */
+    backdrop-filter: blur(5px); /* Apply blur effect */
+    z-index: -1; /* Above the gradient, below content */
+}
+
+.container {
+    text-align: center;
+    color: #2c3e50;
+    height: 100%; /* Make container full height to help main-flex positioning */
+    display: flex; /* Use flexbox for overall layout */
+    flex-direction: column; /* Stack header and main vertically */
+    /* Remove padding-top: 30px; from here, let header handle its own spacing */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px; /* Adjust padding as needed for header spacing */
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent header */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 10; /* Ensure header is above other content */
+}
+
+.logo {
+    margin: 0;
+    font-size: 1.8em;
+    color: #2a9d8f;
+}
+
+nav a {
+    text-decoration: none;
+    color: #2c3e50;
+    margin: 0 15px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #2a9d8f;
+}
+
+.btn-signing {
+    background-color: #e63946; /* A distinct color for the login button */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-signing:hover {
+    background-color: #cc2a35;
+}
+
+
+/* Main content area */
+main {
+    flex-grow: 1; /* Allow main to take up available space */
+    display: flex; /* Use flexbox for vertical centering if needed */
+    align-items: center; /* Vertically center the main-flex content */
+    justify-content: center; /* Horizontally center if space allows */
+    padding: 2rem; /* Add overall padding to main content */
+}
+
+.main-flex {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    justify-content: center; /* Center the flex items when there's extra space */
+    gap: 4rem; /* Increased gap for better spacing */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    width: 100%; /* Take full width of its parent (main) */
+    max-width: 1200px; /* Max width for content on large screens */
+    margin: 0 auto; /* Center the main-flex container */
+}
+
+.content {
+    flex: 1; /* Allow content to grow and shrink */
+    max-width: 600px; /* Max width for readability of text */
+    text-align: left; /* Align text to the left */
+    background-color: rgba(255, 255, 255, 0.9); /* Background for the content box */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.tag-box {
+    display: inline-block; /* Makes it behave like text for sizing */
+    background-color: #457b9d;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 3em;
+    color: #1d3557;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.description {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #457b9d;
+    margin-bottom: 30px;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-get-started, .btn-signing-main {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-get-started {
+    background-color: #2a9d8f;
+    color: white;
+}
+
+.btn-get-started:hover {
+    background-color: #21867a;
+    transform: translateY(-2px);
+}
+
+.btn-signing-main {
+    background-color: #e63946;
+    color: white;
+}
+
+.btn-signing-main:hover {
+    background-color: #cc2a35;
+    transform: translateY(-2px);
+}
+
+
+.robot {
+    flex: 1; /* Allow spline viewer to grow and shrink */
+    max-width: 500px; /* Maintain a reasonable max-width */
+    min-width: 300px; /* Ensure it doesn't get too small */
+    height: 400px; /* Fixed height for the viewer */
+    margin: auto; /* Centers the spline viewer if it's smaller than max-width */
+    order: 2; /* Explicitly place this after the content div in flex flow */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .main-flex {
+        flex-direction: column; /* Stack elements vertically on smaller screens */
+        gap: 2rem; /* Adjust gap for stacked layout */
+    }
+
+    .content {
+        text-align: center; /* Center content on smaller screens */
+        max-width: 90%; /* Adjust max-width for smaller screens */
+        order: 2; /* Put content below spline viewer on small screens if desired, or remove */
+    }
+
+    .robot {
+        order: 1; /* Put spline viewer above content on smaller screens */
+        height: 350px; /* Adjust height for smaller screens */
+    }
+
+    .buttons {
+        justify-content: center; /* Center buttons when content is centered */
+    }
+
+    header {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    nav {
+        margin: 15px 0;
+    }
+
+    nav a {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    .description {
+        font-size: 1em;
+    }
+
+    .btn-get-started, .btn-signing-main {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* The 'island-wrapper' and 'assignment' classes from your original CSS were not used in the HTML provided for this main page,
+   so they are kept but commented out as they might belong to other parts of your game (like mini-games).
+   If they are intended for this page, you'll need to add the corresponding HTML. */
+/*
+
+.island-wrapper {
+    width: 500px;
+    height: 500px;
+    margin: 0 auto 30px;
+    animation: floatSpin 30s linear infinite;
+}
+
+.island-wrapper img {
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+}
+
+@keyframes floatSpin {
+    0% { transform: rotate(0deg) translateY(0); }
+    50% { transform: rotate(180deg) translateY(-5px); }
+    100% { transform: rotate(360deg) translateY(0); }
+}
+
+.assignment {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    margin: 10px auto;
+    width: 70%;
+    padding: 10px;
+}
+
+button {
+    margin-top: 5px;
+    background-color: #2a9d8f;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: #21867a;
+}
+*/
