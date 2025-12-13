@@ -3,53 +3,217 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MathVentures | Campus Math Club</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="landing.css" />
-  <title>Campus Quest — Cozy Chronicles of College Life</title>
 </head>
 <body>
 
-  <img class="image-gradient" src="gradient.png" alt="gradient" >
+  <!-- Optional soft background image -->
+  <img class="image-gradient" src="gradient.png" alt="gradient background">
   <div class="layer-blur"></div>
 
   <div class="container">
+    <!-- HEADER -->
     <header>
-      <h1 class="logo"></h1>
+      <div class="logo">
+        <span class="logo-mark">∑</span>
+        <div class="logo-text">
+          <span class="logo-word logo-word-math">Math</span>
+          <span class="logo-word logo-word-ventures">Ventures</span>
+        </div>
+      </div>
+
       <nav>
         <a href="#">ABOUT US</a>
-        <a href="#">QUIZ</a>
-        <a href="#">ALUMINI PROFILE</a>
-        <a href="#">MATERIALS</a>
+        <a href="#">QUIZZES</a>
+        <a href="#">ALUMNI PROFILE</a>
+        <a href="#">RESOURCES</a>
       </nav>
+
       <button class="btn-signing">SIGN IN</button>
     </header>
 
+    <main>
+      <!-- HERO SECTION -->
+      <section class="hero">
+        <!-- LEFT: TEXT -->
+        <div class="content">
+          <div class="tag-box">
+            <div class="tag">WELCOME TO MATHVENTURES 🧠</div>
+          </div>
 
-<main>
-  <div class="content">
-    <div class="tag-box">
-      <div class="tag">WELCOME TO CAMPUS QUEST 🌱</div>
-    </div>
-    <h1>Cozy Chronicles of College Life</h1>
+          <h1 class="hero-title">
+            Math<span class="hero-title-accent">Ventures</span>
+          </h1>
+          <p class="hero-subtitle">Cozy Adventures in Campus Math</p>
 
-    <p class="description">
-      Enter a tiny, magical version of your campus where real-life struggles turn into cute pixel challenges. From battling deadline monsters
-      in the dungeon of procrastination, to growing your own wellness forest by showing up on time, <strong>Campus Quest</strong> transforms
-      everyday chaos into quirky mini-games that heal your soul, sharpen your habits, and bring back the fun in functional.
-      <br><br>
-      🎮 Four mini-games. 💖 Countless relatable moments. 🌈 Cozy vibes, always.
-    </p>
+          <p class="description">
+            MathVentures is your college math club where problem solving feels less like an exam, and more like
+            a puzzle night with friends. Bite-sized quizzes, concept recap sessions, and friendly leaderboard
+            rivalries — all designed to make math feel warm, playful, and surprisingly chill.
+            <br><br>
+            ✏️ Curated quizzes. 🧩 Concept puzzles. 👥 Team challenges.  
+            Join in, take a quiz, and let your inner nerd breathe.
+          </p>
 
-    <div class="buttons">
-      <a href="#" class="btn-get-started">Peek the Mini-Games &gt;</a>
-      <a href="#" class="btn-signing-main">Play Now &gt;</a>
-    </div>
+          <div class="buttons">
+            <a href="#" class="btn-get-started">Browse Quizzes &gt;</a>
+            <a href="#" class="btn-signing-main">Take Today’s Quiz &gt;</a>
+          </div>
+
+          <div class="hero-footnote">
+            <span>Hosted by the Math Club of TKM College of Engineering</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: FEATURED QUIZ CARD -->
+        <aside class="hero-visual">
+          <div class="quiz-card">
+            <!-- small top tab, like a notepad -->
+            <div class="quiz-card-tab">
+              <span class="quiz-tab-dot"></span>
+              <span class="quiz-tab-dot"></span>
+              <span class="quiz-tab-dot"></span>
+            </div>
+
+            <div class="quiz-card-body">
+              <div class="quiz-badge">Featured Quiz</div>
+
+              <h2 class="quiz-title">Today’s Challenge</h2>
+
+              <p class="quiz-desc">
+                “If <span class="math-inline">3x + 2 = 20</span>, what is the value of
+                <span class="math-inline">x</span>? Warm up with this quick algebra check-in.”
+              </p>
+
+              <div class="quiz-tags">
+                <span class="quiz-tag">Algebra</span>
+                <span class="quiz-tag">Level: Easy</span>
+                <span class="quiz-tag">5 min</span>
+              </div>
+
+              <button class="quiz-start-btn">Attempt Quiz</button>
+            </div>
+
+            <div class="quiz-card-footer">
+              <div class="quiz-footer-left">
+                <span class="quiz-footer-label">Daily streak</span>
+                <div class="quiz-footer-dots">
+                  <span class="streak-dot filled"></span>
+                  <span class="streak-dot filled"></span>
+                  <span class="streak-dot filled"></span>
+                  <span class="streak-dot"></span>
+                  <span class="streak-dot"></span>
+                </div>
+              </div>
+              <div class="quiz-footer-right">
+                <span class="quiz-footer-label">Topic mix</span>
+                <span class="quiz-footer-chip">Algebra • Basics</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- QUIZ COLLECTION SECTION -->
+      <section class="section section-quizzes">
+        <div class="section-header">
+          <h2>Explore Math Quests</h2>
+          <p>Short, themed quizzes curated by MathVentures mentors and seniors.</p>
+        </div>
+
+        <div class="quiz-grid">
+          <article class="quiz-pill">
+            <div class="quiz-pill-icon">➗</div>
+            <h3>Algebra Warm-Up</h3>
+            <p>Linear equations, factoring, and quick simplifications to get your brain online.</p>
+            <div class="quiz-pill-tags">
+              <span>First Years</span>
+              <span>10 Questions</span>
+            </div>
+          </article>
+
+          <article class="quiz-pill">
+            <div class="quiz-pill-icon">📐</div>
+            <h3>Geometry & Intuition</h3>
+            <p>Angles, circles, and diagrams that test how well you “see” the problem.</p>
+            <div class="quiz-pill-tags">
+              <span>Visual</span>
+              <span>Medium</span>
+            </div>
+          </article>
+
+          <article class="quiz-pill">
+            <div class="quiz-pill-icon">📊</div>
+            <h3>Probability Bites</h3>
+            <p>Coin flips, dice rolls, and everyday probability scenarios.</p>
+            <div class="quiz-pill-tags">
+              <span>Fun</span>
+              <span>Short</span>
+            </div>
+          </article>
+
+          <article class="quiz-pill">
+            <div class="quiz-pill-icon">∞</div>
+            <h3>Calculus Sneak Peek</h3>
+            <p>Limit intuitions, slopes, and tiny-tiny changes — no heavy theory, just feel.</p>
+            <div class="quiz-pill-tags">
+              <span>For Seniors</span>
+              <span>Conceptual</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ABOUT / CLUB SECTION -->
+      <section class="section section-about">
+        <div class="about-text">
+          <h2>What is MathVentures?</h2>
+          <p>
+            MathVentures is the official math club of <strong>TKM College of Engineering</strong>. We host weekly quiz
+            evenings, concept clinics before exams, math-inspired games, and sessions led by alumni and faculty.
+          </p>
+          <p>
+            Whether you’re a math major or just math-curious, you’re welcome here. Bring your doubts, your curiosity,
+            and maybe your favourite pen.
+          </p>
+          <ul class="about-list">
+            <li>📅 Weekly quiz & puzzle sessions</li>
+            <li>📈 Concept recaps before internals & end-sems</li>
+            <li>🤝 Team-based quiz leagues & events</li>
+            <li>🎓 Alumni-led problem solving workshops</li>
+          </ul>
+        </div>
+
+        <div class="about-highlight">
+          <div class="about-stat">
+            <span class="stat-number">120+</span>
+            <span class="stat-label">Active Members</span>
+          </div>
+          <div class="about-stat">
+            <span class="stat-number">40+</span>
+            <span class="stat-label">Curated Quizzes</span>
+          </div>
+          <div class="about-stat">
+            <span class="stat-number">5</span>
+            <span class="stat-label">Annual Events</span>
+          </div>
+          <div class="about-note">
+            New members are welcome every semester — no prerequisites, just interest ✨
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer>
+        <p>© <span id="year">2025</span> MathVentures · Math Club of [Your College Name]</p>
+      </footer>
+    </main>
   </div>
-</main>
-
-  
-<spline-viewer class="robot" url="https://prod.spline.design/lx4r7HleJUVorVGO/scene.splinecode"></spline-viewer>
-</div>
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.37/build/spline-viewer.js"></script>
 
 </body>
 </html>
