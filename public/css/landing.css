@@ -1,0 +1,758 @@
+/* ------------------------
+   RESET / BASE
+------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Fredoka', sans-serif;
+  background: linear-gradient(180deg, #ffe4ec 0%, #ffecec 40%, #ffe4ec 100%);
+  color: #181818;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ------------------------
+   BACKGROUND ELEMENTS
+------------------------- */
+.image-gradient {
+  position: fixed;
+  top: 0;
+  right: 0;
+  max-width: 520px;
+  opacity: 0.4;
+  z-index: -2;
+}
+
+.layer-blur {
+  height: 0;
+  width: 34rem;
+  position: fixed;
+  top: 25%;
+  right: -5rem;
+  box-shadow: 0 0 700px 25px #ffffff;
+  rotate: -25deg;
+  z-index: -3;
+}
+
+/* ------------------------
+   MAIN CONTAINER
+------------------------- */
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 3rem;
+  position: relative;
+}
+
+/* ------------------------
+   HEADER
+------------------------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+  margin-top: 0.75rem;
+  position: sticky;
+  top: 0.75rem;
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #54a0ff, #5f27cd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(95, 39, 205, 0.4);
+}
+
+.logo-text {
+  display: flex;
+  align-items: baseline;
+  gap: 0.18rem;
+}
+
+.logo-word {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.logo-word-math {
+  color: #111827;
+}
+
+.logo-word-ventures {
+  color: #0f9d8a;
+}
+
+/* NAVIGATION */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 2.1rem;
+}
+
+nav a {
+  font-size: 0.85rem;
+  letter-spacing: 0.13em;
+  text-decoration: none;
+  color: #555;
+  position: relative;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.3rem;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #106586, #14cebe);
+  transition: width 0.2s ease-out;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+nav a:hover {
+  color: #111;
+}
+
+/* SIGN IN BUTTON (HEADER) */
+.btn-signing {
+  background: #111827;
+  color: #f9fafb;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.25);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.btn-signing:hover {
+  background: #020617;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
+}
+
+/* ------------------------
+   HERO SECTION
+------------------------- */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 3rem;
+  padding: 4rem 0 2rem;
+}
+
+/* LEFT: TEXT CONTENT */
+.content {
+  max-width: 40rem;
+}
+
+/* Tag pill / gradient */
+.tag-box {
+  position: relative;
+  width: max-content;
+  min-width: 18rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: linear-gradient(to right, #656565, #106586, #14cebe);
+  background-size: 200%;
+  animation: animationGradient 2.5s linear infinite;
+  box-shadow: 0 0 15px rgba(16, 101, 134, 0.4);
+  margin-bottom: 1.5rem;
+}
+
+@keyframes animationGradient {
+  to {
+    background-position: 200%;
+  }
+}
+
+.tag-box .tag {
+  inset: 3px;
+  background-color: #050816;
+  color: #e5e7eb;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  cursor: default;
+  position: absolute;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tag-box .tag:hover {
+  color: #22d3ee;
+  background: #020617;
+  transform: translateY(-1px);
+}
+
+/* Hero title with MathVentures brand */
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.3rem;
+  line-height: 1.1;
+  color: #020617;
+}
+
+.hero-title-accent {
+  background: linear-gradient(120deg, #14b8a6, #0ea5e9, #6366f1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-bottom: 1.4rem;
+}
+
+/* Description */
+.description {
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  max-width: 36rem;
+  color: #4b5563;
+}
+
+.description strong {
+  color: #111827;
+}
+
+/* Buttons container */
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.3rem;
+}
+
+/* Primary + secondary buttons */
+.btn-get-started,
+.btn-signing-main {
+  text-decoration: none;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+
+/* Outline button */
+.btn-get-started {
+  border: 1px solid #111827;
+  padding: 0.7rem 1.4rem;
+  background: transparent;
+  color: #111827;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.btn-get-started:hover {
+  background: #111827;
+  color: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.25);
+}
+
+/* Filled button */
+.btn-signing-main {
+  background: linear-gradient(135deg, #54a0ff, #65c7f7);
+  color: #f9fafb;
+  padding: 0.7rem 2.2rem;
+  border: none;
+  box-shadow: 0 8px 26px rgba(56, 189, 248, 0.45);
+}
+
+.btn-signing-main:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 32px rgba(56, 189, 248, 0.6);
+}
+
+.hero-footnote {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* ------------------------
+   HERO RIGHT: QUIZ CARD
+------------------------- */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+}
+
+/* Clean featured quiz card */
+.quiz-card {
+  position: relative;
+  width: 100%;
+  max-width: 390px;
+  border-radius: 1.8rem;
+  background: #ffffff;
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  box-shadow: 0 18px 40px rgba(148, 163, 184, 0.45);
+  overflow: hidden;
+}
+
+/* little top "tab" like a window */
+.quiz-card-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.45rem 0.85rem;
+  background: #f3f4f6;
+}
+
+.quiz-tab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+
+.quiz-tab-dot:nth-child(1) { background: #f97373; }
+.quiz-tab-dot:nth-child(2) { background: #facc15; }
+.quiz-tab-dot:nth-child(3) { background: #4ade80; }
+
+/* body */
+.quiz-card-body {
+  padding: 1.5rem 1.5rem 1.2rem;
+}
+
+.quiz-badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+
+.quiz-title {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: #111827;
+  font-weight: 600;
+}
+
+.quiz-desc {
+  font-size: 0.98rem;
+  color: #4b5563;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.math-inline {
+  font-family: "Courier New", Courier, monospace;
+  background: #f9fafb;
+  padding: 0.05rem 0.25rem;
+  border-radius: 4px;
+}
+
+/* tags */
+.quiz-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.3rem;
+}
+
+.quiz-tag {
+  background: #f3f4ff;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+/* button */
+.quiz-start-btn {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.45);
+  transition: 0.18s ease;
+}
+
+.quiz-start-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 36px rgba(79, 70, 229, 0.6);
+}
+
+/* footer: streak + topic info */
+.quiz-card-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.5rem 1.1rem;
+  background: #f9fafb;
+  border-top: 1px solid rgba(229, 231, 235, 0.9);
+}
+
+.quiz-footer-left,
+.quiz-footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quiz-footer-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: #9ca3af;
+}
+
+.quiz-footer-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.streak-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid #cbd5f5;
+  background: #e5e7eb;
+}
+
+.streak-dot.filled {
+  background: #6366f1;
+}
+
+.quiz-footer-chip {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4b5563;
+}
+
+/* ------------------------
+   SECTION BASE
+------------------------- */
+.section {
+  padding: 2.5rem 0;
+}
+
+/* ------------------------
+   QUIZ GRID SECTION
+------------------------- */
+.section-quizzes {
+  margin-top: 1rem;
+}
+
+.section-header {
+  text-align: left;
+  margin-bottom: 1.8rem;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+  color: #111827;
+}
+
+.section-header p {
+  font-size: 0.98rem;
+  color: #6b7280;
+}
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.3rem;
+}
+
+/* Individual quiz pill cards */
+.quiz-pill {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 1.2rem;
+  padding: 1.2rem 1rem 1.3rem;
+  box-shadow: 0 14px 30px rgba(148, 163, 184, 0.4);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.quiz-pill:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px rgba(148, 163, 184, 0.5);
+  background: #ffffff;
+}
+
+.quiz-pill-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2ff;
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.quiz-pill h3 {
+  font-size: 1.05rem;
+  color: #111827;
+}
+
+.quiz-pill p {
+  font-size: 0.9rem;
+  color: #4b5563;
+  flex: 1;
+}
+
+.quiz-pill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+}
+
+.quiz-pill-tags span {
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: #f3f4ff;
+  color: #4b5563;
+}
+
+/* ------------------------
+   ABOUT SECTION
+------------------------- */
+.section-about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.about-text h2 {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+  color: #111827;
+}
+
+.about-text p {
+  font-size: 0.98rem;
+  color: #4b5563;
+  margin-bottom: 0.7rem;
+}
+
+.about-list {
+  margin-top: 0.6rem;
+  list-style: none;
+}
+
+.about-list li {
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 0.3rem;
+}
+
+/* Right side stats */
+.about-highlight {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 1.5rem;
+  padding: 1.6rem 1.4rem;
+  box-shadow: 0 14px 40px rgba(148, 163, 184, 0.5);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.stat-number {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1d4ed8;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.about-note {
+  grid-column: 1 / -1;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* ------------------------
+   FOOTER
+------------------------- */
+footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.4);
+  text-align: center;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* ------------------------
+   RESPONSIVE DESIGN
+------------------------- */
+
+/* Tablet & below */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 3rem;
+  }
+
+  .hero-visual {
+    order: -1;
+    margin-bottom: 2rem;
+  }
+
+  header {
+    gap: 0.5rem;
+  }
+
+  nav {
+    gap: 1.4rem;
+  }
+
+  .hero-title {
+    font-size: 2.8rem;
+  }
+
+  .quiz-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .section-about {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  header {
+    flex-wrap: wrap;
+    padding-inline: 1rem;
+  }
+
+  nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0.4rem;
+    gap: 0.9rem;
+  }
+
+  .btn-signing {
+    margin-left: auto;
+  }
+
+  .hero {
+    padding-top: 2.5rem;
+    gap: 2rem;
+  }
+
+  .container {
+    padding-inline: 1rem;
+  }
+
+  .hero-title {
+    font-size: 2.4rem;
+  }
+
+  .description {
+    font-size: 0.98rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-get-started,
+  .btn-signing-main {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .quiz-card {
+    margin: 0 auto;
+  }
+
+  .quiz-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-highlight {
+    grid-template-columns: 1fr 1fr;
+  }
+}

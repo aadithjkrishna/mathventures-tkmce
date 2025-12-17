@@ -42,7 +42,6 @@ const baseQuizData = [
   }
 ];
 
-// Attach an id to each question so we can safely shuffle on the client
 const quizData = baseQuizData.map((q, index) => ({
   ...q,
   id: index
@@ -61,13 +60,17 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'pages/login/login.html'));
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'pages/home/landing.html'));
+});
+
 app.get('/quiz-questions', (req, res) => {
   res.json(quizData);
 });
 
 app.post('/submit-quiz', (req, res) => {
-  const userAnswers = req.body.answers; // [{ id, answers: [...] }, ...]
-  const timeTaken = req.body.timeTaken;  // 🔹 seconds taken on client
+  const userAnswers = req.body.answers;
+  const timeTaken = req.body.timeTaken;
 
   if (!Array.isArray(userAnswers)) {
     return res.status(400).json({ error: 'Invalid answers data' });
@@ -110,19 +113,16 @@ app.post('/submit-quiz', (req, res) => {
     });
   });
 
-  // 🔹 "Store" timer value – currently just log it; you can save to DB later
   console.log('Quiz submitted. Time taken (seconds):', timeTaken);
 
   res.json({
     message: 'Quiz submitted successfully',
     score,
     total: quizData.length,
-    timeTaken,   // 🔹 send it back too if you want to display it
+    timeTaken,
     details
   });
 });
-
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
