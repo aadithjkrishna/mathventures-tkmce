@@ -1,4 +1,4 @@
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2zYMkaz-Q9TARaMwyJjirI4CGCUue5n1UyYmeNmqIO8mOEGh16CH_h08n5xH4Acjz5LeMQ0czRF3-/pub?output=csv";
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQue37xH7CikShbObAl6gblXFp8gLUlQ0IgIPEerF0RMJtMpNoDoYrzcPUfKaRjOySfeLLhpEKxu5xH/pub?output=csv";
 
 function init() {
     Papa.parse(sheetURL, {
@@ -69,4 +69,4 @@ function renderLeaderboard(data) {
 }
 
 init();
-setInterval(init, 2000);
+setInterval(init, 500);
