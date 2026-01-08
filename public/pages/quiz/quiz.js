@@ -1,6 +1,7 @@
 let quizData = [];
 let curr_index = 0;
 let userAnswers = [];
+let currentQuizId = null; // New global variable to store the Quiz ID
 
 const TOTAL_TIME_SECONDS = 120;
 let remainingTime = TOTAL_TIME_SECONDS;
@@ -14,6 +15,7 @@ const prevButton = document.getElementById('prev-btn');
 const submitButton = document.getElementById('submit-btn');
 const nextButton = document.getElementById('next-btn');
 
+// Create Timer Element
 const timerDiv = document.createElement("div");
 timerDiv.id = "timer";
 timerDiv.style.marginBottom = "10px";
@@ -21,11 +23,25 @@ timerDiv.style.color = "#fff";
 timerDiv.style.fontWeight = "600";
 quizOuterContainer.insertBefore(timerDiv, quizOuterContainer.firstChild);
 
+// --- 1. Fetch Questions & Quiz ID ---
 fetch('/quiz-questions')
   .then(res => res.json())
   .then(data => {
-    quizData = shuffleArray(data);
+    // Check if the server sent the new object format { quizId, questions }
+    if (data.quizId && data.questions) {
+      currentQuizId = data.quizId;
+      quizData = shuffleArray(data.questions);
+    } else if (Array.isArray(data)) {
+      // Fallback for old API format
+      quizData = shuffleArray(data);
+    } else {
+      console.error("Invalid data format received from server");
+      return;
+    }
+
     console.log("Loaded quizData length:", quizData.length);
+    console.log("Quiz ID:", currentQuizId);
+    
     userAnswers = new Array(quizData.length).fill(null);
     curr_index = 0;
     renderDiv();
@@ -90,8 +106,9 @@ function renderMCQOptions(q) {
     const radio = document.createElement('input');
     radio.type = 'radio';
     radio.name = 'mcq';
-    radio.value = String.fromCharCode(97 + index);
+    radio.value = String.fromCharCode(97 + index); // 'a', 'b', 'c'...
 
+    // If user previously selected this, check it
     if (saved && saved[0] === radio.value) {
       radio.checked = true;
     }
@@ -162,14 +179,9 @@ submitButton.addEventListener('click', () => {
   captureCurrentAnswer();
 
   const unansweredExists = userAnswers.some(ans => ans === null || ans.length === 0);
-
-  let confirmMessage = "";
-
-  if (unansweredExists) {
-    confirmMessage = "Some questions are not answered. Do you still want to submit?";
-  } else {
-    confirmMessage = "Are you sure you want to submit the quiz?";
-  }
+  let confirmMessage = unansweredExists 
+    ? "Some questions are not answered. Do you still want to submit?" 
+    : "Are you sure you want to submit the quiz?";
 
   const confirmSubmit = confirm(confirmMessage);
   if (!confirmSubmit) return;
@@ -177,6 +189,7 @@ submitButton.addEventListener('click', () => {
   sendAllAnswersToServer();
 });
 
+// --- 2. Send Answers + Quiz ID ---
 function sendAllAnswersToServer() {
   if (timerInterval) {
     clearInterval(timerInterval);
@@ -196,6 +209,7 @@ function sendAllAnswersToServer() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      quizId: currentQuizId, // <--- IMPORTANT: Sending the ID back to server
       answers: payloadAnswers,
       timeTaken
     })
@@ -214,10 +228,16 @@ function sendAllAnswersToServer() {
       title.textContent = `Your Score: ${data.score} / ${data.total}`;
       quizContainer.appendChild(title);
 
+      if (typeof data.percentage === 'number') {
+        const percP = document.createElement("p");
+        percP.textContent = `Percentage: ${data.percentage.toFixed(2)}%`;
+        percP.style.color = "#ddd";
+        quizContainer.appendChild(percP);
+      }
+
       if (typeof data.timeTaken === 'number') {
         const timeP = document.createElement("p");
         timeP.textContent = `Time taken: ${formatTime(data.timeTaken)}`;
-        timeP.style.marginTop = "5px";
         timeP.style.marginBottom = "20px";
         timeP.style.fontWeight = "600";
         timeP.style.color = "#fff";
@@ -251,7 +271,7 @@ function sendAllAnswersToServer() {
         }
 
         const qTitle = document.createElement("h3");
-        qTitle.textContent = `Question ${i + 1}: ${q.question}`;
+        qTitle.textContent = `Q${i + 1}: ${q.question}`;
         wrapper.appendChild(qTitle);
 
         const userAns = document.createElement("p");
@@ -282,7 +302,6 @@ function renderButtons() {
     captureCurrentAnswer();
     if (curr_index > 0) {
       curr_index--;
-      console.log("Prev clicked, index:", curr_index, "/", quizData.length);
       renderDiv();
     }
   });
@@ -292,7 +311,6 @@ function renderButtons() {
     captureCurrentAnswer();
     if (curr_index < quizData.length - 1) {
       curr_index++;
-      console.log("Next clicked, index:", curr_index, "/", quizData.length);
       renderDiv();
     }
   });
@@ -337,12 +355,7 @@ function disableNavigation() {
   prevButton.disabled = true;
   nextButton.disabled = true;
   submitButton.disabled = true;
-
   prevButton.style.opacity = "0.5";
   nextButton.style.opacity = "0.5";
   submitButton.style.opacity = "0.5";
-
-  prevButton.style.cursor = "not-allowed";
-  nextButton.style.cursor = "not-allowed";
-  submitButton.style.cursor = "not-allowed";
 }

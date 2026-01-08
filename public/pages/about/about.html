@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | MathVentures</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- SHARED THEME CSS --- */
+    :root {
+      --bg-color: #0f0f11;
+      --grid-line: #1f1f23;
+      --neon-green: #39ff14;
+      --neon-pink: #ff00ff;
+      --chalk-white: #f0f0f0;
+      --accent-blue: #00e5ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      /* Subtle grid background */
+      background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--chalk-white);
+      font-family: 'Space Mono', monospace;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px; /* Narrower for 'document' feel */
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* --- MINIMAL HEADER --- */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed #333;
+      margin-bottom: 60px;
+    }
+
+    .logo { color: var(--neon-green); font-weight: bold; }
+    .back-link { color: #666; transition: 0.2s; }
+    .back-link:hover { color: var(--chalk-white); }
+
+    /* --- CONTENT STYLES --- */
+    .terminal-window {
+      border: 1px solid #333;
+      background: rgba(0,0,0,0.5);
+      padding: 30px;
+      box-shadow: 10px 10px 0px #1a1a1a;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-top: 0;
+      color: var(--accent-blue);
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      color: var(--neon-pink);
+      margin-top: 40px;
+      border-left: 3px solid var(--neon-pink);
+      padding-left: 10px;
+    }
+
+    p { color: #ccc; margin-bottom: 20px; }
+
+    ul { list-style: none; padding: 0; }
+    ul li::before { content: "> "; color: var(--neon-green); }
+    ul li { margin-bottom: 10px; color: #bbb; }
+
+    .highlight { background: #222; padding: 2px 6px; border-radius: 4px; color: var(--neon-green); }
+
+    /* --- FOOTER --- */
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <header>
+      <div class="logo">./MathVentures</div>
+      <a href="index.html" class="back-link">[ cd .. ] Back Home</a>
+    </header>
+
+    <main class="terminal-window">
+      <h1>README.txt</h1>
+      
+      <p>
+        <strong>MathVentures</strong> is the official mathematics community of TKM College of Engineering. 
+        We are a collective of students who believe that math is better when it's not on an exam paper.
+      </p>
+
+      <h2>Our Mission</h2>
+      <p>
+        Most people hate math because they were forced to memorize formulas without seeing the beauty behind them. 
+        We exist to fix that. We organize relaxed quiz nights, peer-learning sessions, and logic puzzles that actually make sense.
+      </p>
+
+      <h2>What We Do</h2>
+      <ul>
+        <li><strong>Weekly Quizzes:</strong> Short, fun, and usually involve prizes.</li>
+        <li><strong>Exam Support:</strong> Seniors teaching juniors (because we know the struggle).</li>
+        <li><strong>Research & Projects:</strong> Exploring the weird side of math (Fractals, Cryptography, AI).</li>
+      </ul>
+
+      <h2>Where to Find Us</h2>
+      <p>
+        We usually hang out in the <span class="highlight">Old Canteen Block</span> or the library discussion rooms.
+        <br><br>
+        <strong>Meeting Time:</strong> Thursdays @ 4:15 PM<br>
+        <strong>Email:</strong> mathventures@tkmce.ac.in
+      </p>
+
+    </main>
+
+    <footer>
+      EOF
+    </footer>
+
+  </div>
+
+</body>
+</html>
