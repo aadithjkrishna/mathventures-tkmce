@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Quiz | Glassmorphic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/create-quiz.css">
+</head>
+<body>
+
+  <div class="glass-container">
+    <header>
+      <h1>Quiz Creator</h1>
+      <a href="/" class="home-btn">Home</a>
+    </header>
+
+    <form id="create-quiz-form">
+      <div class="section metadata-section">
+        <div class="input-group">
+          <label>Quiz Title</label>
+          <input type="text" id="quiz-title" placeholder="e.g., Advanced JavaScript" required>
+        </div>
+        <div class="input-group">
+          <label>Description</label>
+          <textarea id="quiz-desc" placeholder="What is this quiz about?"></textarea>
+        </div>
+      </div>
+
+      <hr>
+
+      <div id="questions-wrapper">
+        </div>
+
+      <button type="button" id="add-question-btn" class="action-btn">+ Add Question</button>
+
+      <div class="form-actions">
+        <button type="submit" id="save-quiz-btn" class="submit-btn">Publish Quiz</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="/static/pages/admin/create-quiz.js"></script>
+</body>
+</html>

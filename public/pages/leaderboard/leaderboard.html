@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+    
+    body {
+      background-color: #050505;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+      overflow-x: hidden; 
+      /* Fixed gradient background */
+      background: linear-gradient(to bottom, #000000 70%, #290b0b 100%) fixed;
+    }
+
+    /* --- DECORATIVE BACKGROUNDS (FIXED) --- */
+    
+    /* 1. Ambient Glow Blobs (Static positions for balance) */
+    .glow-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -2;
+      opacity: 0.5;
+      animation: pulse 6s infinite alternate;
+      pointer-events: none;
+    }
+    .blob-1 { top: -50px; left: -50px; width: 300px; height: 300px; background: #ff7b72; }
+    .blob-2 { bottom: -50px; right: -50px; width: 350px; height: 350px; background: #8a1c1c; animation-delay: 1s;}
+    
+    /* 2. Geometric Shapes (Randomized by JS) */
+    .shape {
+      position: fixed;
+      z-index: 0;
+      opacity: 0.3;
+      border: 2px solid #ff7b72;
+      box-shadow: 0 0 15px rgba(255, 123, 114, 0.2);
+      cursor: pointer;
+      transition: all 1.5s ease-in-out; /* Smooth movement */
+    }
+    
+    .shape:hover, .math-equation:hover {
+        opacity: 0.9;
+        border-color: #fff;
+        color: #fff;
+        z-index: 1; /* Bring to front on hover */
+    }
+
+    /* Define sizes and specific animations only (Positions handled by JS) */
+    .square-1 { width: 60px; height: 60px; border-width: 4px; animation: spinFloat 15s infinite linear; }
+    .square-2 { width: 100px; height: 100px; border-width: 1px; animation: float 8s infinite ease-in-out; }
+    .square-3 { width: 50px; height: 50px; border-style: dashed; animation: spinFloat 20s infinite linear reverse; opacity: 0.15; }
+    .circle-1 { width: 40px; height: 40px; border-radius: 50%; animation: float 6s infinite ease-in-out 1s; }
+    .circle-2 { width: 120px; height: 120px; border-radius: 50%; border-width: 1px; opacity: 0.2; animation: float 10s infinite ease-in-out; }
+
+    /* 3. Math Equations (Randomized by JS) */
+    .math-equation {
+        position: fixed;
+        z-index: 0;
+        color: #ff7b72;
+        opacity: 0.4;
+        font-family: serif; 
+        font-style: italic;
+        text-shadow: 0 0 15px rgba(255, 123, 114, 0.7);
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+        transition: all 1.5s ease-in-out;
+    }
+
+    /* Sizes and specific animations only */
+    .eq-1 { font-size: 1.5rem; transform: rotate(-10deg); animation: float 7s infinite ease-in-out; }
+    .eq-2 { font-size: 2rem; transform: rotate(15deg); animation: float 9s infinite ease-in-out reverse; }
+    .eq-3 { font-size: 1.2rem; animation: spinFloat 25s infinite linear; }
+    .eq-4 { font-size: 1.8rem; opacity: 0.2; animation: float 10s infinite; }
+    .eq-5 { font-size: 1.4rem; transform: rotate(-5deg); animation: float 8s infinite ease-in-out 2s; }
+
+
+    /* --- ANIMATIONS --- */
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.4; }
+      100% { transform: scale(1.1); opacity: 0.6; }
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes spinFloat {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(180deg); }
+      100% { transform: translateY(0px) rotate(360deg); }
+    }
+
+    /* --- CONTENT STYLES --- */
+
+    .header-container {
+      text-align: center;
+      margin-bottom: 25px;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #fff;
+      text-transform: uppercase;
+      text-shadow: 
+        0 0 10px rgba(255, 123, 114, 0.8),
+        0 0 20px rgba(255, 123, 114, 0.6),
+        0 0 40px rgba(255, 123, 114, 0.4);
+      margin-bottom: 5px;
+    }
+
+    .sub-title {
+      color: #ffcccc;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 5px rgba(255, 123, 114, 0.5);
+    }
+
+    .leaderboard-container {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 2; 
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      position: relative; 
+    }
+
+    .row:hover {
+      transform: scale(1.02) translateX(5px);
+    }
+
+    .rank { width: 30px; text-align: left; font-size: 1.1rem; }
+    
+    .avatar { 
+      width: 32px; 
+      height: 32px; 
+      border-radius: 50%; 
+      background: rgba(0,0,0,0.3); 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      margin-right: 15px;
+    }
+    
+    .name { 
+      flex: 1; 
+      text-align: left; 
+      letter-spacing: 0.5px; 
+      font-size: 0.95rem; 
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .score { 
+      text-align: right; 
+      font-size: 1.1rem; 
+      min-width: 40px;
+    }
+
+    .top-tier {
+      background: rgba(255, 123, 114, 0.9);
+      color: #1a0505;
+      border: 1px solid #ff9e9e;
+      box-shadow: 0 0 20px rgba(255, 123, 114, 0.5);
+    }
+    .top-tier .avatar { color: #1a0505; font-size: 1rem; }
+
+    .lower-tier {
+      background: rgba(0, 0, 0, 0.4); 
+      border: 1px solid rgba(255, 123, 114, 0.6);
+      color: #ffdbd9;
+      box-shadow: 0 0 10px rgba(255, 123, 114, 0.1);
+    }
+    .lower-tier .avatar { 
+      color: #ff7b72; 
+      font-size: 1rem; 
+      border: 1px solid rgba(255, 123, 114, 0.5);
+      box-shadow: 0 0 5px rgba(255, 123, 114, 0.3);
+    }
+
+    .loading { text-align: center; color: #ff9e9e; margin-top: 50px; text-shadow: 0 0 10px red;}
+
+  </style>
+</head>
+<body>
+
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  
+  <div class="shape square-1"></div>
+  <div class="shape square-2"></div>
+  <div class="shape square-3"></div>
+  <div class="shape circle-1"></div>
+  <div class="shape circle-2"></div>
+
+  <div class="math-equation eq-1">a² + b² = c²</div>
+  <div class="math-equation eq-2">e^(iπ) + 1 = 0</div>
+  <div class="math-equation eq-3">∫ f(x) dx</div>
+  <div class="math-equation eq-4">E = mc²</div>
+  <div class="math-equation eq-5">∑ i=1 to n</div>
+
+
+  <div class="header-container">
+    <h1>Leaderboard</h1>
+    <div class="sub-title">Mathventures Quiz 2026</div>
+  </div>
+
+  <div class="leaderboard-container" id="leaderboard-body">
+    <div class="loading">Connect to data...</div>
+  </div>
+
+  <script>
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2zYMkaz-Q9TARaMwyJjirI4CGCUue5n1UyYmeNmqIO8mOEGh16CH_h08n5xH4Acjz5LeMQ0czRF3-/pub?output=csv";
+
+    // --- RANDOM POSITION LOGIC ---
+    function randomizeInitialPositions() {
+        const interactiveElements = document.querySelectorAll('.shape, .math-equation');
+        interactiveElements.forEach(el => {
+            // Generate random percentage (0-90% to keep on screen)
+            const randomX = Math.floor(Math.random() * 90) + '%';
+            const randomY = Math.floor(Math.random() * 90) + '%';
+            
+            el.style.left = randomX;
+            el.style.top = randomY;
+            // Reset right/bottom to avoid conflicts with CSS defaults
+            el.style.right = 'auto';
+            el.style.bottom = 'auto';
+        });
+    }
+
+    // --- CLICK TO MOVE LOGIC ---
+    function setupInteractivity() {
+        const interactiveElements = document.querySelectorAll('.shape, .math-equation');
+        interactiveElements.forEach(el => {
+            el.addEventListener('click', function() {
+                const randomX = Math.floor(Math.random() * 90) + '%'; 
+                const randomY = Math.floor(Math.random() * 90) + '%';
+                
+                this.style.left = randomX;
+                this.style.top = randomY;
+                
+                if(this.classList.contains('math-equation')) {
+                    this.style.color = '#fff';
+                    setTimeout(() => this.style.color = '#ff7b72', 500); 
+                }
+            });
+        });
+    }
+
+    // --- LEADERBOARD LOGIC ---
+    function init() {
+        Papa.parse(sheetURL, {
+            download: true,
+            header: true,
+            complete: function (results) {
+                let data = results.data;
+                data = data.filter(row => row.Name && row["Total Score"]);
+                data.sort((a, b) => parseInt(b["Total Score"]) - parseInt(a["Total Score"]));
+                renderLeaderboard(data);
+            }
+        });
+    }
+
+    function renderLeaderboard(data) {
+        const container = document.getElementById('leaderboard-body');
+        container.innerHTML = '';
+
+        data.forEach((player, index) => {
+            const rank = index + 1;
+            const item = document.createElement('div');
+            
+            if (rank <= 3) {
+                item.className = 'row top-tier';
+            } else {
+                item.className = 'row lower-tier';
+            }
+
+            item.innerHTML = `
+              <div class="rank">#${rank}</div>
+              <div class="avatar"><i class="fas fa-cat"></i></div>
+              <div class="name">${player.Name}</div>
+              <div class="score">${player["Total Score"]}</div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    // Run Everything
+    randomizeInitialPositions(); // Scramble on load
+    setupInteractivity(); // Enable click-to-move
+    init(); // Fetch data
+    setInterval(init, 5000); 
+  </script>
+
+</body>
+</html>
