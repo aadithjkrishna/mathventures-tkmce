@@ -23,7 +23,6 @@
       flex-direction: column;
       overflow-x: hidden; 
       background: linear-gradient(to bottom, #000000 70%, #290b0b 100%) fixed;
-      /* Vital for mobile dragging */
       touch-action: pan-y; 
       user-select: none;
       -webkit-user-select: none;
@@ -47,10 +46,8 @@
       position: fixed;
       z-index: 5;
       cursor: grab;
-      /* Critical: Prevents browser scrolling while dragging this element */
       touch-action: none; 
       will-change: transform;
-      /* Hardware acceleration */
       transform: translate3d(0,0,0);
     }
 
@@ -170,9 +167,8 @@
     }
     .hero-section > * { pointer-events: auto; }
 
-    /* Responsive Typography using Clamp */
     .main-title {
-      font-size: clamp(2.5rem, 10vw, 6rem); /* Responsive Font Size */
+      font-size: clamp(2.5rem, 10vw, 6rem);
       font-weight: 900;
       line-height: 1.1;
       color: #fff;
@@ -186,7 +182,7 @@
     }
 
     .sub-main-title {
-      font-size: clamp(1.5rem, 5vw, 3rem); /* Responsive Font Size */
+      font-size: clamp(1.5rem, 5vw, 3rem);
       font-weight: 800;
       color: transparent;
       -webkit-text-stroke: 1px #ff7b72; 
@@ -197,23 +193,36 @@
       animation: fadeInUp 1.2s ease-out;
     }
 
-    /* Scroll Arrow */
+    /* --- SCROLL ARROW --- */
     .scroll-arrow-container {
       position: fixed;
       bottom: 30px;
       left: 50%;
+      /* Centers the container horizontally */
       transform: translateX(-50%);
       z-index: 100;
       animation: bounce 2s infinite;
-      transition: transform 0.3s ease;
       pointer-events: auto;
     }
+
     .scroll-arrow-container a {
-      color: #ff7b72; font-size: 2.5rem; text-decoration: none;
-      transition: all 0.5s ease; display: block; cursor: pointer;
+      color: #ff7b72; 
+      font-size: 2.5rem; 
+      text-decoration: none;
+      display: block; 
+      cursor: pointer;
     }
+
     .scroll-arrow-container a:hover { color: white; text-shadow: 0 0 15px #ff7b72; }
-    .rotate-up { transform: translateX(-50%) rotate(180deg); }
+    
+    /* THE FIX: Apply rotation to the icon only, not the container */
+    #scroll-arrow-icon {
+      transition: transform 0.5s ease;
+    }
+    
+    .rotate-up { 
+      transform: rotate(180deg); 
+    }
 
     /* Description */
     .description-section {
@@ -247,14 +256,11 @@
     .highlight { color: #ff7b72; font-weight: 600; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* --- MOBILE RESPONSIVENESS --- */
     @media (max-width: 768px) {
       nav { padding: 15px 20px; flex-direction: column; gap: 15px; background: rgba(0,0,0,0.8); }
       .nav-links { gap: 20px; width: 100%; justify-content: center; font-size: 0.8rem; }
       .glass-card { padding: 30px 20px; }
       .sub-main-title { -webkit-text-stroke: 1px #ff7b72; }
-      
-      /* Hide very bottom elements if keyboard or UI covers them */
       .scroll-arrow-container { bottom: 20px; }
     }
   </style>
@@ -269,8 +275,9 @@
   <nav>
     <div class="nav-logo" id="spawner-btn" title="Click to spawn magic!">Mathventures</div>
     <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="leaderboard.html">Leaderboard</a>
+      <a href="#">Events</a>
+      <a href="/quiz">Quizzes</a>
+      <a href="/leaderboard">Leaderboard</a>
       <a href="#">Rules</a>
     </div>
   </nav>
@@ -304,13 +311,13 @@
 
   <script>
     /* =========================================
-       PHYSICS & INTERACTION ENGINE (SMOOTH THROW)
+       PHYSICS & INTERACTION ENGINE
        ========================================= */
     
     // Config
     const CONTAINER = document.getElementById('physics-container');
     const DRAG_FRICTION = 0.9;
-    const THROW_FRICTION = 0.96; // Slightly higher for smoother glide
+    const THROW_FRICTION = 0.96;
     const BOUNCE_DAMPING = 0.7;
     
     // State
@@ -318,13 +325,11 @@
     let draggedElement = null;
     let dragOffsetX = 0, dragOffsetY = 0;
     
-    // Velocity Smoothing Logic
     const VELOCITY_HISTORY_SIZE = 5;
     let velocityHistoryX = [];
     let velocityHistoryY = [];
     let lastEventX = 0, lastEventY = 0;
 
-    // Element Types Data
     const SHAPES = [
         { class: 'square', size: 60, border: '4px solid #ff7b72' },
         { class: 'square dashed', size: 50, border: '2px dashed #ff7b72' },
@@ -341,7 +346,6 @@
             this.el = document.createElement('div');
             this.el.classList.add('interactive-element');
             
-            // Initial Physics
             this.x = x || Math.random() * (window.innerWidth - 80);
             this.y = y || Math.random() * (window.innerHeight - 80);
             this.vx = (Math.random() - 0.5) * 1.5;
@@ -356,12 +360,8 @@
             this.width = this.el.offsetWidth;
             this.height = this.el.offsetHeight;
 
-            // Mouse Events
             this.el.addEventListener('mousedown', (e) => this.startDrag(e.clientX, e.clientY));
-            
-            // Touch Events (For Mobile)
             this.el.addEventListener('touchstart', (e) => {
-                // Prevent scrolling while grabbing an object
                 if(e.cancelable) e.preventDefault(); 
                 this.startDrag(e.touches[0].clientX, e.touches[0].clientY);
             }, { passive: false });
@@ -403,7 +403,6 @@
             this.el.style.cursor = 'grabbing';
             this.el.style.zIndex = 100;
             
-            // Reset velocity tracking
             velocityHistoryX = [];
             velocityHistoryY = [];
             lastEventX = cx;
@@ -418,7 +417,6 @@
                 this.vx *= THROW_FRICTION;
                 this.vy *= THROW_FRICTION;
 
-                // Wall Bouncing
                 if (this.x <= 0) { this.x = 0; this.vx *= -1 * BOUNCE_DAMPING; }
                 if (this.y <= 0) { this.y = 0; this.vy *= -1 * BOUNCE_DAMPING; }
                 if (this.x + this.width >= window.innerWidth) { 
@@ -430,23 +428,20 @@
                     this.vy *= -1 * BOUNCE_DAMPING; 
                 }
             }
-            // Use translate3d for hardware acceleration
             this.el.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
         }
     }
 
-    // --- GLOBAL INPUT HANDLERS (Unified Mouse & Touch) ---
+    // --- GLOBAL INPUT HANDLERS ---
     function handleMove(cx, cy) {
         if (!draggedElement) return;
 
         draggedElement.x = cx - dragOffsetX;
         draggedElement.y = cy - dragOffsetY;
 
-        // Calculate instantaneous velocity
         const dx = cx - lastEventX;
         const dy = cy - lastEventY;
 
-        // Add to history for smoothing
         velocityHistoryX.push(dx);
         velocityHistoryY.push(dy);
         if (velocityHistoryX.length > VELOCITY_HISTORY_SIZE) velocityHistoryX.shift();
@@ -459,7 +454,6 @@
     function handleEnd() {
         if (!draggedElement) return;
 
-        // Calculate average velocity from history for smooth throw
         let avgVx = 0, avgVy = 0;
         if(velocityHistoryX.length > 0) {
             avgVx = velocityHistoryX.reduce((a, b) => a + b, 0) / velocityHistoryX.length;
@@ -470,30 +464,23 @@
         draggedElement.el.style.cursor = 'grab';
         draggedElement.el.style.zIndex = 5;
         
-        // Apply smooth velocity
         draggedElement.vx = avgVx * 1.2; 
         draggedElement.vy = avgVy * 1.2;
 
         draggedElement = null;
     }
 
-    // Mouse Listeners
     window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
     window.addEventListener('mouseup', handleEnd);
 
-    // Touch Listeners
     window.addEventListener('touchmove', (e) => {
-        // Only prevent default if we are dragging an element
         if(draggedElement) e.preventDefault(); 
         handleMove(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive: false });
     
     window.addEventListener('touchend', handleEnd);
 
-
-    // --- MAIN LOOP ---
     function initPhysics() {
-        // Initial spawn
         for(let i=0; i<4; i++) elements.push(new PhysicsObject('shape'));
         for(let i=0; i<4; i++) elements.push(new PhysicsObject('equation'));
 
@@ -504,26 +491,23 @@
         loop();
     }
 
-    // --- RESIZE HANDLER ---
     window.addEventListener('resize', () => {
         elements.forEach(el => {
             if (el.x > window.innerWidth) el.x = window.innerWidth - 100;
         });
     });
 
-    // --- SPAWNER LOGIC ---
     document.getElementById('spawner-btn').addEventListener('click', (e) => {
         e.preventDefault(); 
+        
+        const startX = 60 + (Math.random() * 50);
+        const startY = 40 + (Math.random() * 40);
+
         for(let i=0; i<3; i++) {
-            const startX = 50 + (Math.random() * (window.innerWidth - 100));
-            const startY = 100 + (Math.random() * 200);
             const type = Math.random() > 0.5 ? 'shape' : 'equation';
             const newObj = new PhysicsObject(type, startX, startY);
-            
-            // Explosion effect
-            newObj.vx = (Math.random() - 0.5) * 15;
-            newObj.vy = (Math.random() - 0.5) * 15;
-            
+            newObj.vx = 8 + (Math.random() * 15);
+            newObj.vy = 5 + (Math.random() * 10);
             elements.push(newObj);
         }
         const logo = document.getElementById('spawner-btn');
@@ -531,16 +515,16 @@
         setTimeout(() => logo.style.color = "white", 300);
     });
 
-    // --- SCROLL ARROW LOGIC ---
+    // --- SCROLL ARROW LOGIC (Fixed) ---
     function setupScrollArrow() {
         const arrowLink = document.getElementById('scroll-arrow-link');
         const arrowIcon = document.getElementById('scroll-arrow-icon');
-        const arrowContainer = document.getElementById('arrow-container');
         const heroSection = document.getElementById('hero');
         const aboutSection = document.getElementById('about');
         
         arrowLink.addEventListener('click', function(e) {
             e.preventDefault();
+            // Check icon class instead of container class
             if (arrowIcon.classList.contains('rotate-up')) {
                 heroSection.scrollIntoView({ behavior: 'smooth' });
             } else {
@@ -549,13 +533,10 @@
         });
 
         window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const threshold = heroSection.offsetHeight / 2;
-
-            if (scrollY > threshold) {
-                arrowContainer.classList.add('rotate-up');
+            if (window.scrollY > (heroSection.offsetHeight / 2)) {
+                arrowIcon.classList.add('rotate-up');
             } else {
-                arrowContainer.classList.remove('rotate-up');
+                arrowIcon.classList.remove('rotate-up');
             }
         });
     }
