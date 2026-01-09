@@ -26,7 +26,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // --- 2. Database Connection ---
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/quiz-app')
+mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://aadithjkrishna:krishnas45@dbms-project.clwex.mongodb.net/?appName=DBMS-PROJECT')
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
 
@@ -139,6 +139,7 @@ app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pag
 app.get('/create-quiz', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/admin/create-quiz.html')));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/landing/landing.html')));
 app.get('/events', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/events/events.html')));
+app.get('/quizzes', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/quiz_landing/landing.html')));
 
 app.get('/quiz-questions', async (req, res) => {
     const quizId = req.query.id;
