@@ -26,11 +26,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // --- 2. Database Connection ---
-mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://aadithjkrishna:krishnas45@dbms-project.clwex.mongodb.net/?appName=DBMS-PROJECT')
-    .then(() => console.log('Connected to MongoDB'))
+mongoose.connect(
+    process.env.MONGO_URI ||
+    'mongodb+srv://aadithjkrishna:krishnas45@dbms-project.clwex.mongodb.net/mathventures?retryWrites=true&w=majority'
+).then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
-
-// --- 3. Schemas & Models ---
 
 // A. User Schema
 const userSchema = new mongoose.Schema({
@@ -83,7 +83,7 @@ const seedDatabase = async () => {
             console.log("Seeding database...");
             const q1 = await Question.create({ text: "What is the capital of France?", options: ["Madrid", "Berlin", "Paris", "Rome"], answer: ["c"], type: "mcq" });
             const q2 = await Question.create({ text: "What is 2 + 2?", answer: ["4"], type: "short-answer" });
-            
+
             // Create a default quiz
             await Quiz.create({
                 title: "General Knowledge",
@@ -152,7 +152,7 @@ app.get('/quiz-questions', async (req, res) => {
 
         // Send Quiz ID along with questions so frontend knows what to submit back
         res.json({
-            quizId: quiz._id, 
+            quizId: quiz._id,
             questions: quiz.questions.map(q => ({
                 id: q._id,
                 question: q.text,
@@ -163,9 +163,8 @@ app.get('/quiz-questions', async (req, res) => {
     } catch (err) { res.status(500).json({ error: 'Failed to fetch questions' }); }
 });
 
-// API: Submit Quiz (With Recording Logic)
 app.post('/submit-quiz', async (req, res) => {
-    const { answers, timeTaken, quizId } = req.body; // Expect quizId from frontend
+    const { answers, timeTaken, quizId } = req.body;
 
     if (!Array.isArray(answers)) return res.status(400).json({ error: 'Invalid answers data' });
 
@@ -206,8 +205,6 @@ app.post('/submit-quiz', async (req, res) => {
         const total = answers.length;
         const percentage = (score / total) * 100;
 
-        // --- NEW: Save Result to Database ---
-        // Only save if user is logged in (req.user exists)
         if (req.user && quizId) {
             await QuizResult.create({
                 user: req.user._id,
@@ -236,8 +233,6 @@ app.post('/submit-quiz', async (req, res) => {
 });
 
 app.post('/api/create-quiz', async (req, res) => {
-    // Check if user is logged in (Optional, but recommended)
-    // if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
 
     const { title, description, questions } = req.body;
 
@@ -248,19 +243,17 @@ app.post('/api/create-quiz', async (req, res) => {
     try {
         const questionIds = [];
 
-        // 1. Loop through questions and save them to the Question collection
         for (const q of questions) {
             const newQuestion = new Question({
                 text: q.text,
                 type: q.type,
-                options: q.options, // Array of strings
-                answer: q.answer    // Array of strings (e.g. ['a'] or ['Paris'])
+                options: q.options,
+                answer: q.answer
             });
             const savedQ = await newQuestion.save();
             questionIds.push(savedQ._id);
         }
 
-        // 2. Create the Quiz linking these questions
         const newQuiz = new Quiz({
             title,
             description,
