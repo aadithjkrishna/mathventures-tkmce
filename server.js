@@ -133,10 +133,12 @@ app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pag
 app.get('/signup', (req, res) => res.sendFile(path.join(__dirname, 'public', 'signup/signup.html')));
 app.get('/otp-verify', (req, res) => res.sendFile(path.join(__dirname, 'public', 'otp.html')));
 app.get('/quiz', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/quiz/quiz.html')));
-app.get('/leaderboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/leaderboard/leaderboard.html')));
+app.get('/school-leaderboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/leaderboard/school_leaderboard.html')));
+app.get('/college-leaderboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/leaderboard/college_leaderboard.html')));
 app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/about/about.html')));
 app.get('/create-quiz', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/admin/create-quiz.html')));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/landing/landing.html')));
+app.get('/events', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/events/events.html')));
 
 app.get('/quiz-questions', async (req, res) => {
     const quizId = req.query.id;

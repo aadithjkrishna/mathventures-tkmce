@@ -38,7 +38,7 @@
       animation: pulse 6s infinite alternate;
       pointer-events: none;
     }
-    .blob-1 { top: -50px; left: -50px; width: 300px; height: 300px; background: #8a1c1c; }
+    .blob-1 { top: -50px; left: -50px; width: 300px; height: 300px; background: #ff7b72; }
     .blob-2 { bottom: -50px; right: -50px; width: 350px; height: 350px; background: #8a1c1c; animation-delay: 1s;}
 
     /* Interactive Elements Styling */
@@ -77,34 +77,21 @@
     /* --- EQUATIONS --- */
     .math-equation {
         color: #ff7b72;
-        opacity: 0.4; 
-        font-family: 'Courier New', monospace;
-        font-weight: bold;
-        text-shadow: 0 0 5px rgba(255, 123, 114, 0.5);
-        cursor: grab;
-        transition: color 0.3s, text-shadow 0.3s, opacity 0.3s;
-    }
-
-    /* Vertical Matrix Style */
-    .matrix-style {
-        font-size: 1.3rem; 
-        writing-mode: vertical-rl;
-        text-orientation: upright;
-        letter-spacing: 3px;
-        color: #60211c;
-    }
-
-    /* Horizontal Static Style (Normal Equations) */
-    .static-style {
-        font-size: 1.5rem; 
+        opacity: 0.5;
+        font-family: serif; 
         font-style: italic;
-        font-family: serif;
+        text-shadow: 0 0 15px rgba(255, 123, 114, 0.7);
+        white-space: nowrap;
+        font-weight: bold;
+        transition: color 0.3s, text-shadow 0.3s, opacity 0.3s;
     }
 
     .math-equation:hover, .math-equation:active {
         opacity: 1;
         color: #fff;
-        text-shadow: 0 0 10px #fff, 0 0 20px #ff7b72;
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff7b72, 0 0 40px #ff7b72;
+        box-shadow: none; 
+        border: none;
     }
 
     /* --- ANIMATIONS --- */
@@ -279,10 +266,7 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
       text-align: left;
       transition: all 0.3s ease;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      display: block;
+      cursor: default;
     }
 
     .event-card:hover {
@@ -337,7 +321,8 @@
     <div class="nav-links">
       <a href="#hero">Home</a>
       <a href="#events">Events</a>
-      <!-- <a href="#">Rules</a> -->
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="#">Rules</a>
     </div>
   </nav>
 
@@ -353,10 +338,10 @@
   </section>
 
   <section class="events-section" id="events">
-    <h2 class="section-title">ESPOIR Events</h2>
+    <h2 class="section-title">Upcoming Events</h2>
     
     <div class="events-grid">
-        <a href="/school-leaderboard" class="event-card">
+        <div class="event-card">
             <h3>Inter School Quiz</h3>
             <p>
                 A battle of wits for the brightest young minds! Open to high school students, 
@@ -364,9 +349,9 @@
             </p>
             <p><strong>Prizes:</strong> Certificates & Cash Awards</p>
             <span class="event-tag">Junior Level</span>
-        </a>
+        </div>
 
-        <a href="/college-leaderboard" class="event-card">
+        <div class="event-card">
             <h3>Inter College Quiz</h3>
             <p>
                 The ultimate challenge for undergraduate students. Dive deep into advanced calculus, 
@@ -374,19 +359,18 @@
             </p>
             <p><strong>Prizes:</strong> Trophy & Grand Cash Prize</p>
             <span class="event-tag">Senior Level</span>
-        </a>
+        </div>
     </div>
   </section>
 
   <script>
     /* =========================================
-       PHYSICS & MATRIX ENGINE
+       PHYSICS & INTERACTION ENGINE
        ========================================= */
     
     const CONTAINER = document.getElementById('physics-container');
     const THROW_FRICTION = 0.96;
     const BOUNCE_DAMPING = 0.7;
-    const FLOAT_DAMPING = 1.0; // No energy loss for floaters
     
     let elements = [];
     let draggedElement = null;
@@ -405,40 +389,21 @@
     ];
     
     const EQUATIONS = [
-        "a²+b²=c²", "e^(iπ)+1=0", "∫f(x)dx", "E=mc²", "∑i=1ton", "sin(x)", "d/dx", "log(x)", "πr²", "φ"
+        "a² + b² = c²", "e^(iπ) + 1 = 0", "∫ f(x) dx", "E = mc²", "∑ i=1 to n", "sin(x)", "∞"
     ];
 
     class PhysicsObject {
-        constructor(type, x, y, isStatic = false) {
+        constructor(type, x, y) {
             this.el = document.createElement('div');
             this.el.classList.add('interactive-element');
-            this.type = type;
-            this.isDragging = false;
-
-            // Flags
-            this.matrixMode = (type === 'equation-matrix');
-            // isStatic in this context means "Floating Mode" (no friction, constant movement)
-            this.isStatic = isStatic; 
-
-            // --- SPAWN LOGIC ---
-            if (this.matrixMode) {
-                // Matrix elements spawn above screen at random X
-                this.x = Math.random() * window.innerWidth;
-                this.y = (Math.random() * window.innerHeight) - window.innerHeight; 
-                this.vx = 0;
-                this.vy = 0.5 + Math.random() * 1.5; // Slow fall
-            } else {
-                // Shapes and Static Equations
-                this.x = x || Math.random() * (window.innerWidth - 80);
-                this.y = y || Math.random() * (window.innerHeight - 80);
-                
-                // Give them a constant drifting velocity if static (floating)
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-            }
-
+            
+            this.x = x || Math.random() * (window.innerWidth - 80);
+            this.y = y || Math.random() * (window.innerHeight - 80);
+            this.vx = (Math.random() - 0.5) * 1.5;
+            this.vy = (Math.random() - 0.5) * 1.5;
             this.width = 0;
             this.height = 0;
+            this.isDragging = false;
 
             this.setupVisuals(type);
             CONTAINER.appendChild(this.el);
@@ -446,7 +411,6 @@
             this.width = this.el.offsetWidth;
             this.height = this.el.offsetHeight;
 
-            // Drag Events
             this.el.addEventListener('mousedown', (e) => this.startDrag(e.clientX, e.clientY));
             this.el.addEventListener('touchstart', (e) => {
                 if(e.cancelable) e.preventDefault(); 
@@ -455,16 +419,16 @@
         }
 
         setupVisuals(type) {
+            const animClass = Math.random() > 0.5 ? 'spin-slow' : 'float-rotate';
             const inner = document.createElement('div');
             inner.style.width = '100%';
             inner.style.height = '100%';
             inner.style.display = 'flex';
             inner.style.alignItems = 'center';
             inner.style.justifyContent = 'center';
+            inner.classList.add(animClass);
 
             if (type === 'shape') {
-                const animClass = Math.random() > 0.5 ? 'spin-slow' : 'float-rotate';
-                inner.classList.add(animClass);
                 const shapeData = SHAPES[Math.floor(Math.random() * SHAPES.length)];
                 this.el.classList.add('shape');
                 shapeData.class.split(' ').forEach(c => this.el.classList.add(c));
@@ -472,14 +436,10 @@
                 this.el.style.height = shapeData.size + 'px';
                 this.el.style.border = shapeData.border;
                 this.el.appendChild(inner); 
-            } else if (type === 'equation-matrix') {
-                this.el.classList.add('math-equation', 'matrix-style');
+            } else {
+                this.el.classList.add('math-equation');
                 inner.innerText = EQUATIONS[Math.floor(Math.random() * EQUATIONS.length)];
-                this.el.appendChild(inner);
-            } else if (type === 'equation-static') {
-                this.el.classList.add('math-equation', 'static-style');
-                inner.classList.add('float-rotate');
-                inner.innerText = EQUATIONS[Math.floor(Math.random() * EQUATIONS.length)];
+                inner.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
                 this.el.appendChild(inner);
             }
         }
@@ -487,9 +447,6 @@
         startDrag(cx, cy) {
             draggedElement = this;
             this.isDragging = true;
-            // Interaction breaks Matrix mode AND Static (floating) mode
-            this.matrixMode = false;
-            
             this.vx = 0; 
             this.vy = 0;
             dragOffsetX = cx - this.x;
@@ -505,47 +462,21 @@
 
         update() {
             if (!this.isDragging) {
+                this.x += this.vx;
+                this.y += this.vy;
                 
-                if (this.matrixMode) {
-                    // --- MATRIX RAIN BEHAVIOR ---
-                    this.y += this.vy;
-                    if (this.y > window.innerHeight) {
-                        this.y = -100 - (Math.random() * 200);
-                        this.x = Math.random() * (window.innerWidth - 30);
-                        this.vy = 0.5 + Math.random() * 1.5; 
-                    }
-                } else {
-                    // --- BOUNCE PHYSICS (Both Floating and Dropped) ---
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    
-                    // Determine Damping (Friction) based on state
-                    // If isStatic (Floating), NO friction (Damping = 1.0)
-                    // If dropped, friction applies (Damping = 0.7/0.96)
-                    const wallDamping = this.isStatic ? FLOAT_DAMPING : BOUNCE_DAMPING;
-                    
-                    if (!this.isStatic) { 
-                        this.vx *= THROW_FRICTION;
-                        this.vy *= THROW_FRICTION;
-                    }
+                this.vx *= THROW_FRICTION;
+                this.vy *= THROW_FRICTION;
 
-                    // Wall bouncing
-                    if (this.x <= 0) { 
-                        this.x = 0; 
-                        this.vx *= -1 * wallDamping; 
-                    }
-                    if (this.y <= 0) { 
-                        this.y = 0; 
-                        this.vy *= -1 * wallDamping; 
-                    }
-                    if (this.x + this.width >= window.innerWidth) { 
-                        this.x = window.innerWidth - this.width; 
-                        this.vx *= -1 * wallDamping; 
-                    }
-                    if (this.y + this.height >= window.innerHeight) { 
-                        this.y = window.innerHeight - this.height; 
-                        this.vy *= -1 * wallDamping; 
-                    }
+                if (this.x <= 0) { this.x = 0; this.vx *= -1 * BOUNCE_DAMPING; }
+                if (this.y <= 0) { this.y = 0; this.vy *= -1 * BOUNCE_DAMPING; }
+                if (this.x + this.width >= window.innerWidth) { 
+                    this.x = window.innerWidth - this.width; 
+                    this.vx *= -1 * BOUNCE_DAMPING; 
+                }
+                if (this.y + this.height >= window.innerHeight) { 
+                    this.y = window.innerHeight - this.height; 
+                    this.vy *= -1 * BOUNCE_DAMPING; 
                 }
             }
             this.el.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
@@ -584,9 +515,6 @@
         draggedElement.el.style.cursor = 'grab';
         draggedElement.el.style.zIndex = 5;
         
-        // Dropping object makes it fully physics-based (loses floating status)
-        draggedElement.isStatic = false; 
-
         draggedElement.vx = avgVx * 1.2; 
         draggedElement.vy = avgVy * 1.2;
 
@@ -604,11 +532,8 @@
     window.addEventListener('touchend', handleEnd);
 
     function initPhysics() {
-        // ONLY spawn matrix lines initially.
-        // Shapes and Static Equations spawn ONLY on click.
-        
-        // 3. Matrix Equations (Falling)
-        for(let i=0; i<60; i++) elements.push(new PhysicsObject('equation-matrix'));
+        for(let i=0; i<4; i++) elements.push(new PhysicsObject('shape'));
+        for(let i=0; i<4; i++) elements.push(new PhysicsObject('equation'));
 
         function loop() {
             elements.forEach(el => el.update());
@@ -623,32 +548,19 @@
         });
     });
 
-    // --- CLICK SPAWNER LOGIC ---
     document.getElementById('spawner-btn').addEventListener('click', (e) => {
         e.preventDefault(); 
         
-        // Get Logo Position
-        const rect = e.target.getBoundingClientRect();
-        // Calculate center of logo
-        const startX = rect.left + (rect.width / 2);
-        const startY = rect.top + (rect.height / 2);
+        const startX = 60 + (Math.random() * 50);
+        const startY = 40 + (Math.random() * 40);
 
         for(let i=0; i<3; i++) {
-            // Spawn ONLY Shapes or Static Equations
-            const type = Math.random() > 0.5 ? 'shape' : 'equation-static';
-
-            // Create them as floating (isStatic = true) so they keep moving
-            const newObj = new PhysicsObject(type, startX, startY, true);
-            
-            // Give them an outward burst velocity
-            // SUPER SLOW DRIFT:
-            newObj.vx = (Math.random() - 0.5) * 0.8; // Random horizontal drift (approx -0.4 to 0.4)
-            newObj.vy = (Math.random() - 0.5) * 0.8; // Random vertical drift (approx -0.4 to 0.4)
-            
+            const type = Math.random() > 0.5 ? 'shape' : 'equation';
+            const newObj = new PhysicsObject(type, startX, startY);
+            newObj.vx = 8 + (Math.random() * 15);
+            newObj.vy = 5 + (Math.random() * 10);
             elements.push(newObj);
         }
-        
-        // Flash Effect on Logo
         const logo = document.getElementById('spawner-btn');
         logo.style.color = "#ff7b72";
         setTimeout(() => logo.style.color = "white", 300);

@@ -1,49 +1,831 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="quizlanding.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Home | Mathventures</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: #050505;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background: linear-gradient(to bottom, #000000 70%, #290b0b 100%) fixed;
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* --- BACKGROUND OBJECTS --- */
+    .glow-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -2;
+      opacity: 0.5;
+      animation: pulse 6s infinite alternate;
+      pointer-events: none;
+    }
+
+    .blob-1 {
+      top: -50px;
+      left: -50px;
+      width: 300px;
+      height: 300px;
+      background: #ff7b72;
+    }
+
+    .blob-2 {
+      bottom: -50px;
+      right: -50px;
+      width: 350px;
+      height: 350px;
+      background: #8a1c1c;
+      animation-delay: 1s;
+    }
+
+    /* Interactive Elements Styling */
+    .interactive-element {
+      position: fixed;
+      z-index: 5;
+      cursor: grab;
+      touch-action: none;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .interactive-element:active {
+      cursor: grabbing;
+      z-index: 50;
+    }
+
+    /* --- SHAPES --- */
+    .shape {
+      opacity: 0.3;
+      border: 2px solid #ff7b72;
+      box-shadow: 0 0 15px rgba(255, 123, 114, 0.2);
+      transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
+    }
+
+    .shape:hover,
+    .shape:active {
+      opacity: 1;
+      border-color: #fff;
+      box-shadow: 0 0 30px rgba(255, 123, 114, 0.6);
+    }
+
+    .square {
+      border-radius: 0;
+    }
+
+    .circle {
+      border-radius: 50%;
+    }
+
+    .dashed {
+      border-style: dashed;
+    }
+
+    /* --- EQUATIONS --- */
+    .math-equation {
+      color: #ff7b72;
+      opacity: 0.4;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(255, 123, 114, 0.5);
+      cursor: grab;
+      transition: color 0.3s, text-shadow 0.3s, opacity 0.3s;
+    }
+
+    /* Vertical Matrix Style */
+    .matrix-style {
+      font-size: 1.3rem;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      letter-spacing: 3px;
+    }
+
+    /* Horizontal Static Style (Normal Equations) */
+    .static-style {
+      font-size: 1.5rem;
+      font-style: italic;
+      font-family: serif;
+    }
+
+    .math-equation:hover,
+    .math-equation:active {
+      opacity: 1;
+      color: #fff;
+      text-shadow: 0 0 10px #fff, 0 0 20px #ff7b72;
+    }
+
+    /* --- ANIMATIONS --- */
+    .spin-slow {
+      animation: spin 20s infinite linear;
+    }
+
+    .float-rotate {
+      animation: rock 6s infinite ease-in-out;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes rock {
+      0% {
+        transform: rotate(-10deg);
+      }
+
+      50% {
+        transform: rotate(10deg);
+      }
+
+      100% {
+        transform: rotate(-10deg);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.4;
+      }
+
+      100% {
+        transform: scale(1.1);
+        opacity: 0.6;
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-10px);
+      }
+
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    /* --- NAVBAR --- */
+    nav {
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 123, 114, 0.1);
+    }
+
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: #fff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 123, 114, 0.5);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .nav-logo:active {
+      transform: scale(0.9);
+      color: #ff7b72;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #e0e0e0;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #ff7b72;
+      text-shadow: 0 0 8px rgba(255, 123, 114, 0.8);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: #ff7b72;
+      transition: width 0.3s;
+      box-shadow: 0 0 5px #ff7b72;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* --- SECTIONS --- */
+    .hero-section {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 10;
+      padding: 20px;
+      position: relative;
+      pointer-events: none;
+    }
+
+    .hero-section>* {
+      pointer-events: auto;
+    }
+
+    .main-title {
+      font-size: clamp(2.5rem, 10vw, 6rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      text-shadow: 0 0 20px rgba(255, 123, 114, 0.8), 0 0 40px rgba(255, 123, 114, 0.4);
+      margin-bottom: 10px;
+      animation: fadeInUp 1s ease-out;
+      width: 100%;
+      word-wrap: break-word;
+    }
+
+    .sub-main-title {
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 1px #ff7b72;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      text-shadow: 0 0 15px rgba(255, 123, 114, 0.3);
+      animation: fadeInUp 1.2s ease-out;
+    }
+
+    /* --- SCROLL ARROW --- */
+    .scroll-arrow-container {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      animation: bounce 2s infinite;
+      pointer-events: auto;
+    }
+
+    .scroll-arrow-container a {
+      color: #ff7b72;
+      font-size: 2.5rem;
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+    }
+
+    .scroll-arrow-container a:hover {
+      color: white;
+      text-shadow: 0 0 15px #ff7b72;
+    }
+
+    #scroll-arrow-icon {
+      transition: transform 0.5s ease;
+    }
+
+    .rotate-up {
+      transform: rotate(180deg);
+    }
+
+    /* --- EVENTS SECTION --- */
+    .events-section {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 100px 20px 40px 20px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      color: #ff7b72;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      text-shadow: 0 0 10px rgba(255, 123, 114, 0.5);
+      pointer-events: auto;
+    }
+
+    .events-grid {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 1000px;
+      pointer-events: auto;
+    }
+
+    .event-card {
+      flex: 1;
+      min-width: 300px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 123, 114, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      text-align: left;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #ff7b72;
+      box-shadow: 0 10px 30px rgba(255, 123, 114, 0.2);
+    }
+
+    .event-card h3 {
+      color: #fff;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      border-bottom: 2px solid rgba(255, 123, 114, 0.5);
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    .event-card p {
+      color: #ddd;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .event-tag {
+      display: inline-block;
+      padding: 5px 12px;
+      background: rgba(255, 123, 114, 0.2);
+      border: 1px solid #ff7b72;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #ff7b72;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+        background: rgba(0, 0, 0, 0.8);
+      }
+
+      .nav-links {
+        gap: 20px;
+        width: 100%;
+        justify-content: center;
+        font-size: 0.8rem;
+      }
+
+      .sub-main-title {
+        -webkit-text-stroke: 1px #ff7b72;
+      }
+
+      .scroll-arrow-container {
+        bottom: 20px;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <img class="image-gradient" src="gradient.png" alt="gradient" >
-  <div class="layer-blur"></div>
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
 
-  <div class="container">
-    <header>
-      <h1 class="logo">MATHVENTURES</h1>
-      <nav> 
-        <a href="#">QUIZ DASHBOARD</a>
-        <a href="#">PREVIOUS QUESTIONS</a>
-        <a href="#"></a>
-        <a href="#"></a>
-      </nav> 
-      <button class="btn-signing">Back</button>
-    </header>
+  <div id="physics-container"></div>
 
-    <main>
-    <div class="content">
-      <div class="tag-box">
-        <div class="tag"> LEADER BOARD &wedbar;</div>
-      </div>
-      <h1>WEEKLY QUIZ <br></h1>
-    
-    
-    <p class="description">
-        TAKE THIS QUIZ AND GROW
-    </p>
-
-    <div class="buttons">
-         <a href="#" class="btn-get-started"> &gt;</a>
-         <a href="#" class="btn-signing-main">Get started and take the quiz &gt;</a>
+  <nav>
+    <div class="nav-logo" id="spawner-btn" title="Click to spawn magic!">Mathventures</div>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#events">Events</a>
+      <a href="#">Rules</a>
     </div>
+  </nav>
+
+  <div class="scroll-arrow-container" id="arrow-container">
+    <a id="scroll-arrow-link">
+      <i class="fas fa-chevron-down" id="scroll-arrow-icon"></i>
+    </a>
   </div>
-  </main>
-  
-<spline-viewer class="robot" url="https://prod.spline.design/tYkSR5SEtsrzdXIq/scene.splinecode"></spline-viewer>
-</div>
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.16/build/spline-viewer.js"></script>
+
+  <section class="hero-section" id="hero">
+    <div class="main-title">MATHVENTURES</div>
+    <div class="sub-main-title">TKMCE</div>
+  </section>
+
+  <section class="events-section" id="events">
+    <h2 class="section-title">ESPOIR Events</h2>
+
+    <div class="events-grid">
+      <a href="/school-leaderboard" class="event-card">
+        <h3>Inter School Quiz</h3>
+        <p>
+          A battle of wits for the brightest young minds! Open to high school students,
+          this quiz tests general mathematics, logical reasoning, and rapid problem solving.
+        </p>
+        <p><strong>Prizes:</strong> Certificates & Cash Awards</p>
+        <span class="event-tag">Junior Level</span>
+      </a>
+
+      <a href="/college-leaderboard" class="event-card">
+        <h3>Inter College Quiz</h3>
+        <p>
+          The ultimate challenge for undergraduate students. Dive deep into advanced calculus,
+          algebra, and abstract mathematics. Prove your college is the best!
+        </p>
+        <p><strong>Prizes:</strong> Trophy & Grand Cash Prize</p>
+        <span class="event-tag">Senior Level</span>
+      </a>
+    </div>
+  </section>
+
+  <script>
+    /* =========================================
+       PHYSICS & MATRIX ENGINE
+       ========================================= */
+
+    const CONTAINER = document.getElementById('physics-container');
+    const THROW_FRICTION = 0.96;
+    const BOUNCE_DAMPING = 0.7;
+    const FLOAT_DAMPING = 1.0; // No energy loss for floaters
+
+    let elements = [];
+    let draggedElement = null;
+    let dragOffsetX = 0, dragOffsetY = 0;
+
+    const VELOCITY_HISTORY_SIZE = 5;
+    let velocityHistoryX = [];
+    let velocityHistoryY = [];
+    let lastEventX = 0, lastEventY = 0;
+
+    const SHAPES = [
+      { class: 'square', size: 60, border: '4px solid #ff7b72' },
+      { class: 'square dashed', size: 50, border: '2px dashed #ff7b72' },
+      { class: 'circle', size: 80, border: '1px solid #ff7b72' },
+      { class: 'circle', size: 40, border: '2px solid #ff7b72' }
+    ];
+
+    const EQUATIONS = [
+      "a²+b²=c²", "e^(iπ)+1=0", "∫f(x)dx", "E=mc²", "∑i=1ton", "sin(x)", "d/dx", "log(x)", "πr²", "φ"
+    ];
+
+    class PhysicsObject {
+      constructor(type, x, y, isStatic = false) {
+        this.el = document.createElement('div');
+        this.el.classList.add('interactive-element');
+        this.type = type;
+        this.isDragging = false;
+
+        // Flags
+        this.matrixMode = (type === 'equation-matrix');
+        // isStatic in this context means "Floating Mode" (no friction, constant movement)
+        this.isStatic = isStatic;
+
+        // --- SPAWN LOGIC ---
+        if (this.matrixMode) {
+          // Matrix elements spawn above screen at random X
+          this.x = Math.random() * window.innerWidth;
+          this.y = (Math.random() * window.innerHeight) - window.innerHeight;
+          this.vx = 0;
+          this.vy = 0.5 + Math.random() * 1.5; // Slow fall
+        } else {
+          // Shapes and Static Equations
+          this.x = x || Math.random() * (window.innerWidth - 80);
+          this.y = y || Math.random() * (window.innerHeight - 80);
+
+          // Give them a constant drifting velocity if static (floating)
+          this.vx = (Math.random() - 0.5) * 2;
+          this.vy = (Math.random() - 0.5) * 2;
+        }
+
+        this.width = 0;
+        this.height = 0;
+
+        this.setupVisuals(type);
+        CONTAINER.appendChild(this.el);
+
+        this.width = this.el.offsetWidth;
+        this.height = this.el.offsetHeight;
+
+        // Drag Events
+        this.el.addEventListener('mousedown', (e) => this.startDrag(e.clientX, e.clientY));
+        this.el.addEventListener('touchstart', (e) => {
+          if (e.cancelable) e.preventDefault();
+          this.startDrag(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: false });
+      }
+
+      setupVisuals(type) {
+        const inner = document.createElement('div');
+        inner.style.width = '100%';
+        inner.style.height = '100%';
+        inner.style.display = 'flex';
+        inner.style.alignItems = 'center';
+        inner.style.justifyContent = 'center';
+
+        if (type === 'shape') {
+          const animClass = Math.random() > 0.5 ? 'spin-slow' : 'float-rotate';
+          inner.classList.add(animClass);
+          const shapeData = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+          this.el.classList.add('shape');
+          shapeData.class.split(' ').forEach(c => this.el.classList.add(c));
+          this.el.style.width = shapeData.size + 'px';
+          this.el.style.height = shapeData.size + 'px';
+          this.el.style.border = shapeData.border;
+          this.el.appendChild(inner);
+        } else if (type === 'equation-matrix') {
+          this.el.classList.add('math-equation', 'matrix-style');
+          inner.innerText = EQUATIONS[Math.floor(Math.random() * EQUATIONS.length)];
+          this.el.appendChild(inner);
+        } else if (type === 'equation-static') {
+          this.el.classList.add('math-equation', 'static-style');
+          inner.classList.add('float-rotate');
+          inner.innerText = EQUATIONS[Math.floor(Math.random() * EQUATIONS.length)];
+          this.el.appendChild(inner);
+        }
+      }
+
+      startDrag(cx, cy) {
+        draggedElement = this;
+        this.isDragging = true;
+        // Interaction breaks Matrix mode AND Static (floating) mode
+        this.matrixMode = false;
+
+        this.vx = 0;
+        this.vy = 0;
+        dragOffsetX = cx - this.x;
+        dragOffsetY = cy - this.y;
+        this.el.style.cursor = 'grabbing';
+        this.el.style.zIndex = 100;
+
+        velocityHistoryX = [];
+        velocityHistoryY = [];
+        lastEventX = cx;
+        lastEventY = cy;
+      }
+
+      update() {
+        if (!this.isDragging) {
+
+          if (this.matrixMode) {
+            // --- MATRIX RAIN BEHAVIOR ---
+            this.y += this.vy;
+            if (this.y > window.innerHeight) {
+              this.y = -100 - (Math.random() * 200);
+              this.x = Math.random() * (window.innerWidth - 30);
+              this.vy = 0.5 + Math.random() * 1.5;
+            }
+          } else {
+            // --- BOUNCE PHYSICS (Both Floating and Dropped) ---
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Determine Damping (Friction) based on state
+            // If isStatic (Floating), NO friction (Damping = 1.0)
+            // If dropped, friction applies (Damping = 0.7/0.96)
+            const wallDamping = this.isStatic ? FLOAT_DAMPING : BOUNCE_DAMPING;
+
+            if (!this.isStatic) {
+              this.vx *= THROW_FRICTION;
+              this.vy *= THROW_FRICTION;
+            }
+
+            // Wall bouncing
+            if (this.x <= 0) {
+              this.x = 0;
+              this.vx *= -1 * wallDamping;
+            }
+            if (this.y <= 0) {
+              this.y = 0;
+              this.vy *= -1 * wallDamping;
+            }
+            if (this.x + this.width >= window.innerWidth) {
+              this.x = window.innerWidth - this.width;
+              this.vx *= -1 * wallDamping;
+            }
+            if (this.y + this.height >= window.innerHeight) {
+              this.y = window.innerHeight - this.height;
+              this.vy *= -1 * wallDamping;
+            }
+          }
+        }
+        this.el.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
+      }
+    }
+
+    // --- GLOBAL INPUT HANDLERS ---
+    function handleMove(cx, cy) {
+      if (!draggedElement) return;
+
+      draggedElement.x = cx - dragOffsetX;
+      draggedElement.y = cy - dragOffsetY;
+
+      const dx = cx - lastEventX;
+      const dy = cy - lastEventY;
+
+      velocityHistoryX.push(dx);
+      velocityHistoryY.push(dy);
+      if (velocityHistoryX.length > VELOCITY_HISTORY_SIZE) velocityHistoryX.shift();
+      if (velocityHistoryY.length > VELOCITY_HISTORY_SIZE) velocityHistoryY.shift();
+
+      lastEventX = cx;
+      lastEventY = cy;
+    }
+
+    function handleEnd() {
+      if (!draggedElement) return;
+
+      let avgVx = 0, avgVy = 0;
+      if (velocityHistoryX.length > 0) {
+        avgVx = velocityHistoryX.reduce((a, b) => a + b, 0) / velocityHistoryX.length;
+        avgVy = velocityHistoryY.reduce((a, b) => a + b, 0) / velocityHistoryY.length;
+      }
+
+      draggedElement.isDragging = false;
+      draggedElement.el.style.cursor = 'grab';
+      draggedElement.el.style.zIndex = 5;
+
+      // Dropping object makes it fully physics-based (loses floating status)
+      draggedElement.isStatic = false;
+
+      draggedElement.vx = avgVx * 1.2;
+      draggedElement.vy = avgVy * 1.2;
+
+      draggedElement = null;
+    }
+
+    window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+    window.addEventListener('mouseup', handleEnd);
+
+    window.addEventListener('touchmove', (e) => {
+      if (draggedElement) e.preventDefault();
+      handleMove(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+
+    window.addEventListener('touchend', handleEnd);
+
+    function initPhysics() {
+      // 1. Shapes (Floating - isStatic=true)
+      for (let i = 0; i < 3; i++) elements.push(new PhysicsObject('shape', null, null, true));
+
+      // 2. Static Equations (Floating - isStatic=true)
+      for (let i = 0; i < 4; i++) elements.push(new PhysicsObject('equation-static', null, null, true));
+
+      // 3. Matrix Equations (Falling)
+      for (let i = 0; i < 60; i++) elements.push(new PhysicsObject('equation-matrix'));
+
+      function loop() {
+        elements.forEach(el => el.update());
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
+
+    window.addEventListener('resize', () => {
+      elements.forEach(el => {
+        if (el.x > window.innerWidth) el.x = window.innerWidth - 100;
+      });
+    });
+
+    // --- CLICK SPAWNER LOGIC ---
+    document.getElementById('spawner-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Get Logo Position
+      const rect = e.target.getBoundingClientRect();
+      // Calculate center of logo
+      const startX = rect.left + (rect.width / 2);
+      const startY = rect.top + (rect.height / 2);
+
+      for (let i = 0; i < 3; i++) {
+        // Spawn ONLY Shapes or Static Equations
+        const type = Math.random() > 0.5 ? 'shape' : 'equation-static';
+
+        // Create them as floating (isStatic = true) so they keep moving
+        const newObj = new PhysicsObject(type, startX, startY, true);
+
+        // Give them an outward burst velocity
+        // REDUCED SPEED HERE: VERY GENTLE DRIFT
+        newObj.vx = (Math.random() * 0.4) - 0.2; // very gentle horizontal drift
+        newObj.vy = 0.2 + Math.random() * 0.3;  // slow downward float
+
+
+        elements.push(newObj);
+      }
+
+      // Flash Effect on Logo
+      const logo = document.getElementById('spawner-btn');
+      logo.style.color = "#ff7b72";
+      setTimeout(() => logo.style.color = "white", 300);
+    });
+
+    // --- SCROLL ARROW LOGIC ---
+    function setupScrollArrow() {
+      const arrowLink = document.getElementById('scroll-arrow-link');
+      const arrowIcon = document.getElementById('scroll-arrow-icon');
+      const heroSection = document.getElementById('hero');
+      const eventsSection = document.getElementById('events');
+
+      arrowLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (arrowIcon.classList.contains('rotate-up')) {
+          heroSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          eventsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > (heroSection.offsetHeight / 2)) {
+          arrowIcon.classList.add('rotate-up');
+        } else {
+          arrowIcon.classList.remove('rotate-up');
+        }
+      });
+    }
+
+    initPhysics();
+    setupScrollArrow();
+  </script>
 
 </body>
+
 </html>
