@@ -140,6 +140,7 @@ app.get('/create-quiz', (req, res) => res.sendFile(path.join(__dirname, 'public'
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/landing/landing.html')));
 app.get('/events', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/events/events.html')));
 app.get('/quizzes', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/quiz_landing/landing.html')));
+app.get('/launch', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/launch/launch.html')));
 
 app.get('/quiz-questions', async (req, res) => {
     const quizId = req.query.id;

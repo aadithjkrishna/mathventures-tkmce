@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Launch</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: sans-serif; /* Clean, bold font */
+    }
+
+    .launch-btn {
+      font-size: 18vw; /* Huge responsive text */
+      font-weight: 900;
+      color: #00ff00; /* Bright Green */
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: -5px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Add a glow effect on hover */
+    .launch-btn:hover {
+      text-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+      transform: scale(1.02);
+    }
+
+    .launch-btn:active {
+      transform: scale(0.95);
+      color: #00cc00;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="launch-btn">LAUNCH</a>
+
+</body>
+</html>
