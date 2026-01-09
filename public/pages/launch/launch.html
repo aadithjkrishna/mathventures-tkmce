@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Launch</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
@@ -14,41 +17,59 @@
     body, html {
       height: 100%;
       width: 100%;
-      background-color: black;
+      background-color: #050505; /* Deep black background */
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      font-family: sans-serif; /* Clean, bold font */
+      font-family: 'Montserrat', sans-serif;
     }
 
     .launch-btn {
-      font-size: 18vw; /* Huge responsive text */
-      font-weight: 900;
-      color: #00ff00; /* Bright Green */
+      /* Swapped Colors */
+      background-color: #008f11; /* Matrix Green Background */
+      color: #ffffff; /* White Text */
+      
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
       text-decoration: none;
       text-transform: uppercase;
-      letter-spacing: -5px;
-      transition: all 0.3s ease;
+      
+      padding: 18px 50px;
+      border-radius: 50px; /* Pill shape */
+      border: 2px solid transparent;
+      
+      /* Green glow initially */
+      box-shadow: 0 0 20px rgba(0, 143, 17, 0.4);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      
       cursor: pointer;
       user-select: none;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Add a glow effect on hover */
+    /* Hover Effects */
     .launch-btn:hover {
-      text-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
-      transform: scale(1.02);
+      background-color: #00ff00; /* Bright Neon Green on hover */
+      color: #000000; /* Black text for high contrast on neon */
+      transform: translateY(-3px) scale(1.05);
+      
+      /* Intense Green Glow */
+      box-shadow: 0 10px 50px rgba(0, 255, 0, 0.6);
+      border-color: #00ff00;
     }
 
+    /* Active/Click Effect */
     .launch-btn:active {
-      transform: scale(0.95);
-      color: #00cc00;
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 5px 20px rgba(0, 255, 0, 0.4);
     }
   </style>
 </head>
 <body>
 
-  <a href="/" class="launch-btn">LAUNCH</a>
+  <a href="/" class="launch-btn">Launch</a>
 
 </body>
 </html>
